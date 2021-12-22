@@ -175,10 +175,8 @@ class CustomPolicy extends HTMLElement{
         let div3 = document.createElement('div')
         div3.setAttribute('class', 'cookieDesc')
         let p = document.createElement('p')
-        let aLink = document.createElement('a')
-        aLink.innerHTML = this.purecookieLink
-        p.innerHTML = this.purecookieDesc
-        p.appendChild(aLink)
+        p.innerHTML += this.purecookieDesc
+        p.innerHTML += this.purecookieLink
         div3.appendChild(p)
 
         let div4 = document.createElement('div')
