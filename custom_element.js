@@ -3,29 +3,23 @@ class CustomPolicy extends HTMLElement{
     constructor(){
         super()
         this.shadow = this.attachShadow({mode: 'open'})
-        //variaveis
-        this.purecookieTitle = "Política de Cookies"
-        this.purecookieDesc = "Usamos cookies para melhorar sua experiência de navegação no site. Ao utilizar nosso site, trataremos os cookies de acordo com a nossa política de Cookies. Para ter mais informações sobre como isso é feito."
-        this.purecookieLink = '<a href="/politica-de-privacidade#cookies">clique aqui.</a>'
-        this.purecookieButton = "ok"
-        
 
-        //this.defaultColor = this.getAttribute("color-font") || '#056162'
-
+        //text
+        this.purecookieTitle = this.getAttribute("purecookie-title") || "Política de Cookies"
+        this.purecookieDesc = this.getAttribute("purecookie-desc") || "Usamos cookies para melhorar sua experiência de navegação no site. Ao utilizar nosso site, trataremos os cookies de acordo com a nossa política de Cookies. Para ter mais informações sobre como isso é feito."
+        this.purecookieLink = `<a href="${this.getAttribute("purecookie-link") || '#'}">clique aqui.</a>`
+        this.purecookieLabelButton = this.getAttribute("purecookie-label-button") || "ok"
+        //colors
+        this.purecookieColorFontTitle = this.getAttribute("purecookie-color-font-title") || "#252525"
+        this.purecookieColorFontContent = this.getAttribute("purecookie-color-font-content") || "#252525"
+        this.purecookieColorBackgroundBtn = this.getAttribute("purecookie-color-background-btn") || "#2ddad0"
+        this.purecookieColorBtn = this.getAttribute("purecookie-color-btn") || "#252525"
+        this.purecookieBackgroundColorContent = this.getAttribute("purecookie-background-color-content") || "white"
         this.start()
     }
 
-
     start(){
-        this.raiz = document.createElement('div')
-        this.raiz.innerHTML = '<h1>TESTE</h1>'
-        this.raiz.setAttribute('class', 'raiz')
         this.setStyle()
-        this.shadow.appendChild(this.raiz)
-
-        //this.shadow.getElementById('darkMode').addEventListener('click', this.darkMode.bind(this))
-
-        //window.onload = this.cookieConsent()
         window.addEventListener('load', this.cookieConsent.bind(this))
     }
 
@@ -33,13 +27,13 @@ class CustomPolicy extends HTMLElement{
     
         const style = document.createElement('style')
         style.textContent = `
-            .raiz .cookieConsentContainer {
+            .cookieConsentContainer {
                 z-index: 999999999;
                 width: 350px;
                 min-height: 20px;
                 box-sizing: border-box;
                 padding: 30px 30px 30px 30px;
-                background: white;
+                background: ${this.purecookieBackgroundColorContent};
                 overflow: hidden;
                 position: fixed;
                 bottom: 30px;
@@ -49,36 +43,36 @@ class CustomPolicy extends HTMLElement{
                 box-shadow: 2px 2px 5px #888888;
             }
 
-            .raiz .cookieConsentContainer .cookieTitle a {
+            .cookieConsentContainer .cookieTitle a {
                 font-family: OpenSans, arial, sans-serif;
-                color: #252525;
+                color: ${this.purecookieColorFontTitle};
                 font-size: 22px;
                 line-height: 20px;
                 display: block
             }
 
-            .raiz .cookieConsentContainer .cookieDesc p {
+            .cookieConsentContainer .cookieDesc p {
                 margin: 0;
                 padding: 0;
                 font-family: OpenSans, arial, sans-serif;
-                color: #252525;
+                color: ${this.purecookieColorFontContent};
                 font-size: 13px;
                 line-height: 20px;
                 display: block;
                 margin-top: 10px
             }
 
-            .raiz .cookieConsentContainer .cookieDesc a {
+            .cookieConsentContainer .cookieDesc a {
                 font-family: OpenSans, arial, sans-serif;
                 color: #252525;
                 text-decoration: underline
             }
 
-            .raiz .cookieConsentContainer .cookieButton a {
+            .cookieConsentContainer .cookieButton a {
                 display: inline-block;
                 font-family: OpenSans, arial, sans-serif;
-                background: #2ddad0;
-                color: #252525;
+                background: ${this.purecookieColorBackgroundBtn};
+                color: ${this.purecookieColorBtn};
                 font-size: 14px;
                 font-weight: 700;
                 margin-top: 14px;
@@ -91,11 +85,11 @@ class CustomPolicy extends HTMLElement{
                 transition: ease-in-out 100ms;
             }
 
-            .raiz .cookieConsentContainer .cookieButton a:hover {
+            .cookieConsentContainer .cookieButton a:hover {
                 cursor: pointer;
                 transform: scale(1.05);
-                background: #252525;
-                color: #2ddad0;
+                background: ${this.purecookieColorBtn};
+                color: ${this.purecookieColorBackgroundBtn};
             }
 
             @media (max-width:980px) {
@@ -119,6 +113,7 @@ class CustomPolicy extends HTMLElement{
             }
         `
         this.shadow.appendChild(style)
+        document.querySelector('head').appendChild(style)
     }
 
     pureFadeIn(e, o) {
@@ -161,10 +156,10 @@ class CustomPolicy extends HTMLElement{
     }
 
     cookieConsent() {
-        this.getCookie("purecookieDismiss") || (this.raiz.innerHTML +=
+        this.getCookie("purecookieDismiss") || (document.querySelector('body').innerHTML +=
             '<div class="cookieConsentContainer" id="cookieConsentContainer"><div class="cookieTitle"><a>' +
             this.purecookieTitle + '</a></div><div class="cookieDesc"><p>' + this.purecookieDesc + " " + this.purecookieLink +
-            '</p></div><div class="cookieButton"><a onClick="purecookieDismiss();">' + this.purecookieButton +
+            '</p></div><div class="cookieButton"><a onClick="purecookieDismiss();">' + this.purecookieLabelButton +
             "</a></div></div>", this.pureFadeIn("cookieConsentContainer"))
     }
 
